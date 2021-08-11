@@ -7,21 +7,26 @@ module.exports.getAllTasks = (req, res, next) => {
 };
 
 module.exports.createNewTasks = (req, res, next) => {
-  const task = new Task(req.body);
-  task.save().then(result => {
-    res.send('Task created');
-  });
+  if (req.body.hasOwnProperty('text') && req.body.hasOwnProperty('isCheck')){
+    const task = new Task(req.body);
+    task.save().then(result => {
+      res.send('Task created');
+    });
+  } else res.status(422).send('Error! Params not correct');
 };
 
 module.exports.changeTaskInfo = (req, res, next) => {
-  Task.updateOne({_id: req.body._id}, req.body).then(result => {
-    res.send('Task updated');
-  });
+  if (req.query.id) {
+    Task.updateOne({_id: req.body._id}, req.body).then(result => {
+      res.send('Task updated');
+    });
+  } else res.status(422).send('Error! Params not correct');
 };
 
 module.exports.deleteTask = (req, res, next) => {
-  Task.deleteOne(req.body).then(result => {
-    res.send('Task delete');
-  });
+  if (req.query.id) {
+    Task.deleteOne({_id: req.body._id}, req.body).then(result => {
+      res.send('Task delete');
+    });
+  } else res.status(422).send('Error! Params not correct');
 };
-
