@@ -30,17 +30,15 @@ module.exports.changeTaskInfo = (req, res, next) => {
 module.exports.deleteTask = (req, res, next) => {
   if (req.query._id) {
     Task.deleteOne({_id: req.query._id}).then(result => {
-        Task.find().then(result => {
-          res.send({ data: result });
-        });
+      Task.find().then(result => {
+        res.send({ data: result });
+      });
     });
   } else res.status(422).send('Error! Params not correct');
 };
 
 module.exports.deleteAllTask = (req, res, next) => {
-    Task.deleteMany().then(result => {
-        Task.find().then(result => {
-          res.send({ data: result });
-        });
-    });
+  Task.deleteMany().then(result => {
+    res.send({ data: result });
+  });
 };
